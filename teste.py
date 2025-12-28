@@ -43,17 +43,31 @@ st.markdown("""
 ID_PLANILHA = "1iXXBhK5lt0Eml_VE1BPXbxgSesjeVK9DJFCZAuklGd4"
 URL_PLANILHA = f"https://docs.google.com/spreadsheets/d/{ID_PLANILHA}/export?format=csv"
 
-@st.cache_data(ttl=60) # Atualiza a cada 1 minuto
+# @st.cache_data(ttl=60) # Atualiza a cada 1 minuto
+# def carregar_dados():
+#     try:
+#         # Lendo a planilha publicada
+#         df = pd.read_csv(URL_PLANILHA)
+#         # Limpeza de espaços nos nomes das colunas
+#         df.columns = df.columns.str.strip() 
+#         return df
+#     except Exception as e:
+#         st.error(f"Erro ao conectar com a planilha: {e}")
+#         return None
+
+
+@st.cache_data(ttl=60)
 def carregar_dados():
     try:
-        # Lendo a planilha publicada
-        df = pd.read_csv(URL_PLANILHA)
-        # Limpeza de espaços nos nomes das colunas
+        # Adicione encoding='utf-8' explicitamente
+        df = pd.read_csv(URL_PLANILHA, encoding='utf-8') 
         df.columns = df.columns.str.strip() 
         return df
     except Exception as e:
+        # Se der erro de utf-8, tente latin1 apenas para testar
         st.error(f"Erro ao conectar com a planilha: {e}")
         return None
+
 
 df = carregar_dados()
 
@@ -106,12 +120,8 @@ if df is not None:
                 
                 # Link do WhatsApp
                 numero_whatsapp = "5521986577315"
-                #link = f"https://wa.me/{numero_whatsapp}?text={urllib.parse.quote(texto_pedido)}"
+                link = f"https://wa.me/{numero_whatsapp}?text={urllib.parse.quote(texto_pedido)}"
               
-                # O quote_plus é mais robusto para strings que viram URLs
-                texto_codificado = urllib.parse.quote(texto_pedido.encode('utf-8'))
-                link = f"https://wa.me/{numero_whatsapp}?text={texto_codificado}"
-                
                 st.success("Tudo certo! Clique no botão abaixo para finalizar no WhatsApp.")
                 st.link_button("🟢 ABRIR WHATSAPP PARA CONCLUIR", link)
             else:
