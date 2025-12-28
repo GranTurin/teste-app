@@ -23,23 +23,7 @@ st.markdown(
 # Estilização CSS para Mobile e Botões
 st.markdown("""
     <style>
-
-    /* Remove o botão 'Share', a 'Estrela' e o ícone do GitHub */
-    .stAppDeployButton, .stAppToolbar, [data-testid="stStatusWidget"] {
-        display: none !important;
-    }
-    /* Remove o menu de hambúrguer (os 3 risquinhos) */
-    #MainMenu {visibility: hidden;}
-    
-    /* Remove a logo do Streamlit e o rodapé 'Made with Streamlit' */
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-
-    /* Opcional: Remove o espaço em branco no topo que sobra após esconder o header */
-    .block-container {
-        padding-top: 1rem;
-    }
-    
+    /* 1. SEU ESTILO ORIGINAL (Botão e Scroll) */
     .main { overflow-y: auto; }
     .stButton button { 
         width: 100%; 
@@ -51,7 +35,32 @@ st.markdown("""
         border: none;
     }
     .stButton button:hover { border: 1px solid #128C7E; color: white; }
-    [data-testid="stHeader"] { background: rgba(0,0,0,0); }
+
+    /* 2. LIMPEZA DA INTERFACE (Esconde Header, Menu e GitHub) */
+    /* Esconde a barra do topo inteira */
+    [data-testid="stHeader"] {
+        display: none !important;
+    }
+    
+    /* Esconde o menu de hambúrguer */
+    #MainMenu {
+        visibility: hidden !important;
+    }
+    
+    /* Esconde o rodapé */
+    footer {
+        visibility: hidden !important;
+    }
+
+    /* Remove botões de deploy e barra de ferramentas para o usuário */
+    .stAppDeployButton, .stAppToolbar {
+        display: none !important;
+    }
+
+    /* Ajuste de respiro no topo */
+    .block-container {
+        padding-top: 2rem !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 
