@@ -60,7 +60,7 @@ URL_PLANILHA = f"https://docs.google.com/spreadsheets/d/{ID_PLANILHA}/export?for
 
 #################### --------  Comentado a versao Original ----------- ############
 
-@st.cache_data(ttl=60)
+@st.cache_data(ttl=1)
 def carregar_dados():
     try:
         # Lendo com utf-8 e engine python para maior compatibilidade
