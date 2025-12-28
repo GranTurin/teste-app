@@ -9,10 +9,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# Meta tags para o preview no WhatsApp (og:image)
+# Meta tags para o preview no WhatsApp
 st.markdown(
     """
     <head>
+        <meta charset="utf-8">
         <meta property="og:title" content="🍱 Gran Turin - Cardápio Digital" />
         <meta property="og:description" content="Monte seu pedido e envie pelo WhatsApp!" />
         <meta property="og:image" content="https://raw.githubusercontent.com/GranTurin/gran_turin_app/main/logo.png" />
@@ -20,7 +21,7 @@ st.markdown(
     """, unsafe_allow_html=True
 )
 
-# Estilização CSS para Mobile e Botões
+# Estilização CSS
 st.markdown("""
     <style>
     .main { overflow-y: auto; }
@@ -38,54 +39,37 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 2. CARREGAMENTO DE DADOS (Google Sheets CSV)
-# Usando o link da sua nova planilha com formato de exportação CSV
+# 2. CARREGAMENTO DE DADOS
 ID_PLANILHA = "1iXXBhK5lt0Eml_VE1BPXbxgSesjeVK9DJFCZAuklGd4"
 URL_PLANILHA = f"https://docs.google.com/spreadsheets/d/{ID_PLANILHA}/export?format=csv"
 
-####### _------------ Parte alterada para mudança do Icones teste ################
-
-# @st.cache_data(ttl=60) # Atualiza a cada 1 minuto
-# def carregar_dados():
-#     try:
-#         # Lendo a planilha publicada
-#         df = pd.read_csv(URL_PLANILHA)
-#         # Limpeza de espaços nos nomes das colunas
-#         df.columns = df.columns.str.strip() 
-#         return df
-#     except Exception as e:
-#         st.error(f"Erro ao conectar com a planilha: {e}")
-#         return None
-
-
-#################### --------  Comentado a versao Original ----------- ############
-
-@st.cache_data(ttl=1)
+@st.cache_data(ttl=30) # Reduzi para 30 segundos para atualizar mais rápido
 def carregar_dados():
     try:
-        # O parâmetro sep=None faz o pandas detectar automaticamente se é vírgula ou ponto e vírgula
-        df = pd.read_csv(URL_PLANILHA, sep=None, engine='python', encoding='utf-8')
-        df.columns = df.columns.str.strip() 
+        # sep=None e engine='python' detectam automaticamente se o Google mudou de , para ;
+        df = pd.read_csv(URL_PLANILHA, encoding='utf-8', sep=None, engine='python')
+        # Limpeza de espaços e garantia de texto puro
+        df.columns = df.columns.str.strip()
+        for col in df.columns:
+            df[col] = df[col].astype(str).str.strip()
         return df
     except Exception as e:
-        st.error(f"Erro: {e}")
+        st.error(f"Erro ao conectar com a planilha: {e}")
         return None
-
 
 df = carregar_dados()
 
 # 3. INTERFACE
 st.image("https://raw.githubusercontent.com/GranTurin/gran_turin_app/main/logo.png", width=100)
-#st.title("🍱 Cardápio do Dia")
-st.title("Teste de Emoji: 🍱 🥩 🥗")
+st.title("🍱 Cardápio do Dia")
 st.write("Selecione suas opções abaixo e envie seu pedido.")
 
 if df is not None:
     try:
-        # Extração das listas (ignorando valores vazios)
-        opcoes_carne = df['Carnes'].dropna().tolist()
-        opcoes_acomp = df['Acompanhamentos'].dropna().tolist()
-        opcoes_tamanho = df['Tamanho'].dropna().tolist()
+        # Extração das listas (removendo 'nan' que o pandas cria em células vazias)
+        opcoes_carne = [x for x in df['Carnes'].tolist() if x != 'nan']
+        opcoes_acomp = [x for x in df['Acompanhamentos'].tolist() if x != 'nan']
+        opcoes_tamanho = [x for x in df['Tamanho'].tolist() if x != 'nan']
 
         # Formulário de Identificação
         with st.container(border=True):
@@ -96,7 +80,7 @@ if df is not None:
         st.subheader("📝 Monte seu prato")
         tamanho = st.selectbox("📏 Tamanho da Marmita:", ["Selecione..."] + opcoes_tamanho)
         carne = st.selectbox("🥩 Proteína Principal:", ["Selecione..."] + opcoes_carne)
-        acomps = st.multiselect("🥗 Acompanhamentos (escolha vários):", opcoes_acomp)
+        acomps = st.multiselect("🥗 Acompanhamentos:", opcoes_acomp)
         obs = st.text_area("🗒️ Observações (Opcional):", placeholder="Ex: Sem feijão, mandar talher, etc.")
 
         st.divider()
@@ -107,7 +91,7 @@ if df is not None:
                 
                 txt_acomps = ", ".join(acomps) if acomps else "Padrão da casa"
                 
-                # Formatação da mensagem para o WhatsApp
+                # Formatação da mensagem
                 texto_pedido = (
                     f"*🍱 NOVO PEDIDO - GRAN TURIN*\n"
                     f"━━━━━━━━━━━━━━━━━━━━━\n"
@@ -122,10 +106,11 @@ if df is not None:
                     f"✅ _Enviado via Cardápio Digital_"
                 )
                 
-                # Link do WhatsApp
+                # Link do WhatsApp com encoding UTF-8 garantido
                 numero_whatsapp = "5521986577315"
-                link = f"https://wa.me/{numero_whatsapp}?text={urllib.parse.quote(texto_pedido)}"
-              
+                texto_url = urllib.parse.quote(texto_pedido.encode('utf-8'))
+                link = f"https://wa.me/{numero_whatsapp}?text={texto_url}"
+                
                 st.success("Tudo certo! Clique no botão abaixo para finalizar no WhatsApp.")
                 st.link_button("🟢 ABRIR WHATSAPP PARA CONCLUIR", link)
             else:
