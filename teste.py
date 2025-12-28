@@ -23,6 +23,12 @@ st.markdown(
 # Estilização CSS para Mobile e Botões
 st.markdown("""
     <style>
+
+    /* Remove o botão 'Share', a 'Estrela' e o ícone do GitHub */
+    .stAppDeployButton, .stAppToolbar, [data-testid="stStatusWidget"] {
+        display: none !important;
+    }
+    
     .main { overflow-y: auto; }
     .stButton button { 
         width: 100%; 
