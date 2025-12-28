@@ -41,7 +41,10 @@ st.markdown("""
 # 2. CARREGAMENTO DE DADOS (Google Sheets CSV)
 # Usando o link da sua nova planilha com formato de exportação CSV
 ID_PLANILHA = "1iXXBhK5lt0Eml_VE1BPXbxgSesjeVK9DJFCZAuklGd4"
-URL_PLANILHA = f"https://docs.google.com/spreadsheets/d/{ID_PLANILHA}/export?format=csv"
+#URL_PLANILHA = f"https://docs.google.com/spreadsheets/d/{ID_PLANILHA}/export?format=csv"
+URL_PLANILHA = f"https://docs.google.com/spreadsheets/d/e/2PACX-1vQBai98jFvBGaS_TM0Qaao5bGanhR85VbvSuFFJvbha1DW5gXJlyXXqEiq3dUgVvQTqplDcG3jQqqLG/pub?output=csv
+"
+#https://docs.google.com/spreadsheets/d/e/2PACX-1vQBai98jFvBGaS_TM0Qaao5bGanhR85VbvSuFFJvbha1DW5gXJlyXXqEiq3dUgVvQTqplDcG3jQqqLG/pub?output=csv
 
 ####### _------------ Parte alterada para mudança do Icones teste ################
 
