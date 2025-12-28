@@ -106,7 +106,11 @@ if df is not None:
                 
                 # Link do WhatsApp
                 numero_whatsapp = "5521986577315"
-                link = f"https://wa.me/{numero_whatsapp}?text={urllib.parse.quote(texto_pedido)}"
+                #link = f"https://wa.me/{numero_whatsapp}?text={urllib.parse.quote(texto_pedido)}"
+              
+                # O quote_plus é mais robusto para strings que viram URLs
+                texto_codificado = urllib.parse.quote(texto_pedido.encode('utf-8'))
+                link = f"https://wa.me/{numero_whatsapp}?text={texto_codificado}"
                 
                 st.success("Tudo certo! Clique no botão abaixo para finalizar no WhatsApp.")
                 st.link_button("🟢 ABRIR WHATSAPP PARA CONCLUIR", link)
