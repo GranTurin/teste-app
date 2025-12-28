@@ -63,17 +63,12 @@ URL_PLANILHA = f"https://docs.google.com/spreadsheets/d/{ID_PLANILHA}/export?for
 @st.cache_data(ttl=1)
 def carregar_dados():
     try:
-        # Lendo com utf-8 e engine python para maior compatibilidade
-        df = pd.read_csv(URL_PLANILHA, encoding='utf-8', engine='python')
-        
-        # Limpeza profunda: Remove espaços e garante que o texto seja string
-        df.columns = df.columns.str.strip()
-        for col in df.columns:
-            df[col] = df[col].astype(str).str.strip()
-            
+        # O parâmetro sep=None faz o pandas detectar automaticamente se é vírgula ou ponto e vírgula
+        df = pd.read_csv(URL_PLANILHA, sep=None, engine='python', encoding='utf-8')
+        df.columns = df.columns.str.strip() 
         return df
     except Exception as e:
-        st.error(f"Erro ao ler CSV: {e}")
+        st.error(f"Erro: {e}")
         return None
 
 
