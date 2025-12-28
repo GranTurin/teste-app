@@ -4,7 +4,7 @@ import urllib.parse
 
 # 1. CONFIGURAÇÃO DA PÁGINA
 st.set_page_config(
-    page_title="Gran Turin - Cardápio",
+    page_title="Gran Turin - Cardápio Teste",
     page_icon="🍱",
     initial_sidebar_state="collapsed",
 )
