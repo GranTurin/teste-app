@@ -43,6 +43,8 @@ st.markdown("""
 ID_PLANILHA = "1iXXBhK5lt0Eml_VE1BPXbxgSesjeVK9DJFCZAuklGd4"
 URL_PLANILHA = f"https://docs.google.com/spreadsheets/d/{ID_PLANILHA}/export?format=csv"
 
+####### _------------ Parte alterada para mudança do Icones teste ################
+
 # @st.cache_data(ttl=60) # Atualiza a cada 1 minuto
 # def carregar_dados():
 #     try:
@@ -56,16 +58,22 @@ URL_PLANILHA = f"https://docs.google.com/spreadsheets/d/{ID_PLANILHA}/export?for
 #         return None
 
 
+#################### --------  Comentado a versao Original ----------- ############
+
 @st.cache_data(ttl=60)
 def carregar_dados():
     try:
-        # Adicione encoding='utf-8' explicitamente
-        df = pd.read_csv(URL_PLANILHA, encoding='utf-8') 
-        df.columns = df.columns.str.strip() 
+        # Lendo com utf-8 e engine python para maior compatibilidade
+        df = pd.read_csv(URL_PLANILHA, encoding='utf-8', engine='python')
+        
+        # Limpeza profunda: Remove espaços e garante que o texto seja string
+        df.columns = df.columns.str.strip()
+        for col in df.columns:
+            df[col] = df[col].astype(str).str.strip()
+            
         return df
     except Exception as e:
-        # Se der erro de utf-8, tente latin1 apenas para testar
-        st.error(f"Erro ao conectar com a planilha: {e}")
+        st.error(f"Erro ao ler CSV: {e}")
         return None
 
 
