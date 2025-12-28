@@ -28,6 +28,17 @@ st.markdown("""
     .stAppDeployButton, .stAppToolbar, [data-testid="stStatusWidget"] {
         display: none !important;
     }
+    /* Remove o menu de hambúrguer (os 3 risquinhos) */
+    #MainMenu {visibility: hidden;}
+    
+    /* Remove a logo do Streamlit e o rodapé 'Made with Streamlit' */
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+
+    /* Opcional: Remove o espaço em branco no topo que sobra após esconder o header */
+    .block-container {
+        padding-top: 1rem;
+    }
     
     .main { overflow-y: auto; }
     .stButton button { 
