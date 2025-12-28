@@ -34,8 +34,14 @@ st.markdown("""
         font-weight: bold;
         border: none;
     }
+    
+    /* Remove o menu superior para parecer um app real */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
     .stButton button:hover { border: 1px solid #128C7E; color: white; }
     [data-testid="stHeader"] { background: rgba(0,0,0,0); }
+    
     </style>
     """, unsafe_allow_html=True)
 
