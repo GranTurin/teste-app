@@ -76,7 +76,8 @@ df = carregar_dados()
 
 # 3. INTERFACE
 st.image("https://raw.githubusercontent.com/GranTurin/gran_turin_app/main/logo.png", width=100)
-st.title("🍱 Cardápio do Dia")
+#st.title("🍱 Cardápio do Dia")
+st.title("Teste de Emoji: 🍱 🥩 🥗")
 st.write("Selecione suas opções abaixo e envie seu pedido.")
 
 if df is not None:
