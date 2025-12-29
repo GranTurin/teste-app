@@ -23,6 +23,13 @@ st.markdown(
 # Estilização CSS para Mobile e Botões
 st.markdown("""
     <style>
+
+    /* 1. Remove o rodapé "Made with Streamlit" */
+    footer {
+        visibility: hidden !important;
+        height: 0px;
+    }
+    
     /* 1. SEU ESTILO ORIGINAL (Botão e Scroll) */
     .main { overflow-y: auto; }
     .stButton button { 
