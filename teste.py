@@ -24,10 +24,10 @@ st.markdown(
 st.markdown("""
     <style>
 
-    /* 1. Remove o rodapé "Made with Streamlit" */
-    footer {
+    /* 1. Remove o balão "Hosted with Streamlit / Created by..." */
+    [data-testid="stStatusWidget"], .stAppToolbar {
+        display: none !important;
         visibility: hidden !important;
-        height: 0px;
     }
     
     /* 1. SEU ESTILO ORIGINAL (Botão e Scroll) */
